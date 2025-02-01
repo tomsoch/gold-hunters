@@ -1,8 +1,9 @@
 package org.tomsoch;
 
 public class ResourceNode {
-    private int id;
+    private final int id;
     private int resources;
+
     public ResourceNode(int id, int initialResources) {
         this.id = id;
         this.resources = initialResources;
@@ -18,7 +19,7 @@ public class ResourceNode {
 
     public int collectResources(int collected) {
         resources = resources - collected;
-        System.out.println("The node "+ id + " has " + resources + " resources");
+        System.out.println("The node " + id + " has " + resources + " resources");
         return collected;
     }
 }
