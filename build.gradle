@@ -17,3 +17,9 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+processResources {
+    filesMatching("app.properties") {
+        expand(project.properties)
+    }
+}
