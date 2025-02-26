@@ -23,31 +23,35 @@ public class Worker implements Runnable {
                 System.out.println("Worker " + id + " is going to resource node " + resourceNode.getId());
                 Thread.sleep(facility.getWorkerTravelTime());
 
+                int collected = 0;
+                boolean needNewAssignment = false;
+
                 synchronized (resourceNode) {
                     if (resourceNode.getResources() > 0) {
                         System.out.println("Worker " + id + " is collecting from node " + resourceNode.getId());
                         Thread.sleep(facility.getResourceCollectingTime());
-                        int collected = resourceNode.collectResources(Math.min(workerCapacity, resourceNode.getResources()));
-
-                        if (resourceNode.getResources() == 0) {
-                            facility.reportEmptyNode(resourceNode.getId());
-                            resourceNode = facility.assignResourceNode();
-                            if (resourceNode == null) {
-                                System.out.println("Worker " + id + " is stopping - no more resources available");
-                                break;
-                            }
-                        }
-
+                        collected = resourceNode.collectResources(Math.min(workerCapacity, resourceNode.getResources()));
                         System.out.println("Worker " + id + " collected " + collected + " resources");
-                        Thread.sleep(facility.getWorkerTravelTime());
-                        facility.storeResources(collected);
-                    } else {
-                        facility.reportEmptyNode(resourceNode.getId());
-                        resourceNode = facility.assignResourceNode();
-                        if (resourceNode == null) {
-                            System.out.println("Worker " + id + " is stopping - no more resources available");
-                            break;
-                        }
+                    }
+                }
+
+                System.out.println("Worker " + id + " is going back to facility");
+                Thread.sleep(facility.getWorkerTravelTime());
+
+                if (resourceNode.getResources() == 0) {
+                    facility.reportEmptyNode(resourceNode.getId(), id);
+                    needNewAssignment = true;
+                }
+
+                if (collected > 0) {
+                    facility.storeResources(collected);
+                }
+
+                if (needNewAssignment) {
+                    resourceNode = facility.assignResourceNode();
+                    if (resourceNode == null) {
+                        System.out.println("Worker " + id + " is stopping - no more resources available");
+                        break;
                     }
                 }
             }
@@ -56,4 +60,7 @@ public class Worker implements Runnable {
             e.printStackTrace();
         }
     }
+
+
+
 }

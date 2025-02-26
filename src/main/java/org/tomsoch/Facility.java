@@ -32,9 +32,9 @@ public class Facility {
         this.random = new Random();
     }
 
-    public synchronized void reportEmptyNode(int nodeId) {
+    public synchronized void reportEmptyNode(int nodeId, int workerId) {
         emptyNodes.add(nodeId);
-        System.out.println("Facility registered that node " + nodeId + " is empty");
+        System.out.println("Facility registered that node " + nodeId + " is empty, info from the worker " + workerId);
     }
 
     public ResourceNode assignResourceNode() {
@@ -78,7 +78,7 @@ public class Facility {
         if (resources >= workerTrainingCost) {
             System.out.println("Training new worker " + id + ". Resources before: " + resources);
             resources -= workerTrainingCost;
-            System.out.println("Resources after training cost: " + resources);
+            System.out.println("Resources after training: " + resources);
             Thread.sleep(workerProductionTime);
             createAndStartWorker(id);
         }
