@@ -53,4 +53,12 @@ public class PropertiesProvider {
     public int getWorkerCapacity() {
         return Integer.parseInt(properties.getProperty("workerCapacity"));
     }
+
+    public int getRegenerationTime() {
+        return Integer.parseInt(properties.getProperty("regenerationTime"));
+    }
+
+    public int getRegeneratedResources() {
+        return Integer.parseInt(properties.getProperty("regeneratedResources"));
+    }
 }

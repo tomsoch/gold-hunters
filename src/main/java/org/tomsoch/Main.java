@@ -15,6 +15,8 @@ public class Main {
         int resourceCollectingTime = properties.getResourceCollectingTime();
         int targetNumberOfWorkers = properties.getTargetNumberOfWorkers();
         int workerCapacity = properties.getWorkerCapacity();
+        int regenerationTime = properties.getRegenerationTime();
+        int regeneratedResources = properties.getRegeneratedResources();
 
         ResourceNode[] nodes = new ResourceNode[resourceNodes];
         for (int i = 0; i < resourceNodes; i++) {
@@ -22,7 +24,8 @@ public class Main {
         }
 
         Facility facility = new Facility(initialResources, workerTrainingCost, workerProductionTime,
-                workerTravelTime, resourceCollectingTime, workerCapacity, nodes);
+                workerTravelTime, resourceCollectingTime, workerCapacity, nodes,
+                regenerationTime, regeneratedResources);
 
         facility.startOperation(startingWorkers, targetNumberOfWorkers);
     }
